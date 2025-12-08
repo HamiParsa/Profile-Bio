@@ -1015,6 +1015,32 @@ const projectsData = [
       },
     ],
   },
+  {
+    name: "React&Next",
+    url: "https://hamiparsa.github.io/React-Next/",
+    images: [
+      "https://raw.githubusercontent.com/HamiParsa/React-Next/main/pic1.png",
+      "https://raw.githubusercontent.com/HamiParsa/React-Next/main/pic2.png",
+    ],
+    tech: [
+      {
+        name: "React",
+        icon: <FaReact className="text-sky-400 text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "Next.js",
+        icon: <RiNextjsFill className="text-white text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "TypeScript",
+        icon: <SiTypescript className="text-blue-500 text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "Tailwind CSS",
+        icon: <SiTailwindcss className="text-cyan-400 text-2xl sm:text-3xl" />,
+      },
+    ],
+  },
 ];
 
 // Component for individual project slider
