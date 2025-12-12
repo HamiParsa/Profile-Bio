@@ -1016,32 +1016,6 @@ const projectsData = [
     ],
   },
   {
-    name: "React&Next",
-    url: "https://hamiparsa.github.io/React-Next/",
-    images: [
-      "https://raw.githubusercontent.com/HamiParsa/React-Next/main/pic1.png",
-      "https://raw.githubusercontent.com/HamiParsa/React-Next/main/pic2.png",
-    ],
-    tech: [
-      {
-        name: "React",
-        icon: <FaReact className="text-sky-400 text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "Next.js",
-        icon: <RiNextjsFill className="text-white text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "TypeScript",
-        icon: <SiTypescript className="text-blue-500 text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "Tailwind CSS",
-        icon: <SiTailwindcss className="text-cyan-400 text-2xl sm:text-3xl" />,
-      },
-    ],
-  },
-  {
     name: "TripletsCods Lab",
     url: "https://hamiparsa.github.io/TripletsCods-Lab/",
     images: [
@@ -1068,11 +1042,37 @@ const projectsData = [
     ],
   },
   {
-    name: "TripletsCods Lab",
+    name: "My Dream",
     url: "https://hamiparsa.github.io/My-Dream/",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/My-Dream/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/My-Dream/main/pic2.png",
+    ],
+    tech: [
+      {
+        name: "React",
+        icon: <FaReact className="text-sky-400 text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "Next.js",
+        icon: <RiNextjsFill className="text-white text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "TypeScript",
+        icon: <SiTypescript className="text-blue-500 text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "Tailwind CSS",
+        icon: <SiTailwindcss className="text-cyan-400 text-2xl sm:text-3xl" />,
+      },
+    ],
+  },
+  {
+    name: "Animation-Universe",
+    url: "https://hamiparsa.github.io/Animation-Universe/",
+    images: [
+      "https://raw.githubusercontent.com/HamiParsa/Animation-Universe/main/pic1.png",
+      "https://raw.githubusercontent.com/HamiParsa/Animation-Universe/main/pic2.png",
     ],
     tech: [
       {
@@ -1252,7 +1252,7 @@ export default function ProjectsShowcase() {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="p-4 sm:p-6 lg:p-8 rounded-3xl backdrop-blur-md bg-gradient-to-r from-white/5 via-white/10 to-white/5 border border-white/10 shadow-xl transition-all duration-500"
           >
             <ProjectSlider project={p} />
@@ -1261,9 +1261,9 @@ export default function ProjectsShowcase() {
 
         <hr
           className="my-10 h-1 w-full border-0 rounded-full 
-                bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 
-                shadow-[0_0_15px_rgba(236,72,153,0.7),0_0_30px_rgba(236,72,153,0.5)]
-                animate-pulse"
+          bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 
+          shadow-[0_0_15px_rgba(236,72,153,0.7),0_0_30px_rgba(236,72,153,0.5)]
+          animate-pulse"
         />
       </div>
 
