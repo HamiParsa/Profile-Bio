@@ -78,7 +78,7 @@ const projectsData = [
   },
   {
     name: "Game Zone",
-    url: "https://68ed02f96988f880c055bca2--stellular-salamander-2f94ef.netlify.app/",
+    url: "https://stellular-salamander-2f94ef.netlify.app/",
     images: [
       "https://github.com/HamiParsa/Game-Zone/raw/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic2.png",
@@ -131,7 +131,7 @@ const projectsData = [
   },
   {
     name: "Kouman",
-    url: "https://68f35fa594d264c6ff4b4366--brilliant-brioche-644fbd.netlify.app/",
+    url: "https://kouman.netlify.app/",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Kouman/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Kouman/main/pic2.png",
@@ -384,7 +384,7 @@ const projectsData = [
   },
   {
     name: "Anime Shop",
-    url: "https://68d824c2fcc42fb40adc4396--spiffy-kringle-0e26e5.netlify.app/",
+    url: "https://spiffy-kringle-0e26e5.netlify.app/",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Anime-Shop/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Anime-Shop/main/pic2.png",
@@ -472,7 +472,7 @@ const projectsData = [
   },
   {
     name: "Youtube",
-    url: "https://68dd0ea5d5bc2569c7ec0a2c--lighthearted-tarsier-75bef8.netlify.app/",
+    url: "https://lighthearted-tarsier-75bef8.netlify.app/",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Youtube/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Youtube/main/pic2.png",
@@ -552,7 +552,7 @@ const projectsData = [
   },
   {
     name: "Second Hand Shop",
-    url: "https://68e275dd8eb29772d65fdb15--delightful-wisp-111a27.netlify.app/",
+    url: "https://delightful-wisp-111a27.netlify.app/",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Second-Hand-Shop/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Second-Hand-Shop/main/pic2.png",
@@ -826,7 +826,7 @@ const projectsData = [
   },
   {
     name: "MamanPaz",
-    url: "https://mamanpaz47.ir/",
+    url: "https://roaring-scone-986cf7.netlify.app/",
     images: [
       "https://yourimageshare.com/ib/9q6Nc8J62T.png",
       "https://yourimageshare.com/ib/RGe9D01vKg.png",
