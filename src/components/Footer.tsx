@@ -1,6 +1,8 @@
 "use client";
 
 import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6";
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
@@ -22,8 +24,9 @@ export default function Footer() {
 
   const socialLinks = [
     { icon: <FaGithub size={32} />, link: "https://github.com/hamiparsa", color: "#EC4899" },
-    { icon: <FaLinkedin size={32} />, link: "https://www.linkedin.com/in/hami-parsa-146ba437a/", color: "#3B82F6" },
+    { icon: <FaLinkedin size={32} />, link: "https://www.linkedin.com/in/HamiParsa", color: "#3B82F6" },
     { icon: <FaTelegramPlane size={32} />, link: "https://t.me/hamiparsa", color: "#1DA1F2" },
+    { icon: <FaInstagram size={32} />, link: "https://www.instagram.com/hamii.parsa", color: "#1DA1F2" },
   ];
 
   return (
