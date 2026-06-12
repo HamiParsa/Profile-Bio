@@ -825,41 +825,6 @@ const projectsData = [
     ],
   },
   {
-    name: "MamanPaz",
-    url: "https://roaring-scone-986cf7.netlify.app/",
-    images: [
-      "https://yourimageshare.com/ib/9q6Nc8J62T.png",
-      "https://yourimageshare.com/ib/RGe9D01vKg.png",
-      "https://yourimageshare.com/ib/t3SfNTD9HN.png",
-      "https://yourimageshare.com/ib/tSPK7Bec0B.png",
-      "https://yourimageshare.com/ib/haMSN0T1yD.png",
-      "https://yourimageshare.com/ib/PCCTkmyMET.png",
-      "https://yourimageshare.com/ib/kCRSvfc89Q.png",
-    ],
-    tech: [
-      {
-        name: "React",
-        icon: <FaReact className="text-sky-400 text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "Next.js",
-        icon: <RiNextjsFill className="text-white text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "TypeScript",
-        icon: <SiTypescript className="text-blue-500 text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "Tailwind CSS",
-        icon: <SiTailwindcss className="text-cyan-400 text-2xl sm:text-3xl" />,
-      },
-      {
-        name: "Zustand",
-        icon: <TbBrandRedux className="text-purple-600 text-2xl sm:text-3xl" />,
-      },
-    ],
-  },
-  {
     name: "NewYork",
     url: "https://hamiparsa.github.io/NewYork/",
     images: [
