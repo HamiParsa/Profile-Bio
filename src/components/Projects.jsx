@@ -1058,6 +1058,36 @@ const projectsData = [
       },
     ],
   },
+  {
+    name: "Game-Hub",
+    url: "https://game-hub0.netlify.app/",
+    images: [
+      "https://yourimageshare.com/ib/zd2D5E6xcr.png",
+      "https://yourimageshare.com/ib/gz2qIRYYx4.png",
+      "https://yourimageshare.com/ib/z4RluCshMk.png",
+      "https://yourimageshare.com/ib/9slmPB9Wbg.png",
+      "https://yourimageshare.com/ib/2Lpb9kTq4L.png",
+      "https://yourimageshare.com/ib/aHF8oVrh4I.png",
+    ],
+    tech: [
+      {
+        name: "React",
+        icon: <FaReact className="text-sky-400 text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "Next.js",
+        icon: <RiNextjsFill className="text-white text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "TypeScript",
+        icon: <SiTypescript className="text-blue-500 text-2xl sm:text-3xl" />,
+      },
+      {
+        name: "Tailwind CSS",
+        icon: <SiTailwindcss className="text-cyan-400 text-2xl sm:text-3xl" />,
+      },
+    ],
+  },
 ];
 
 // Component for individual project slider
@@ -1181,7 +1211,8 @@ function ProjectSlider({ project }) {
 
         /* Glow effect for active dot */
         .shadow-glow {
-          box-shadow: 0 0 10px rgba(255, 0, 150, 0.6),
+          box-shadow:
+            0 0 10px rgba(255, 0, 150, 0.6),
             0 0 20px rgba(255, 0, 200, 0.4);
         }
       `}</style>
