@@ -11,6 +11,9 @@ import { TbBrandRedux } from "react-icons/tb";
 import { SiTypescript } from "react-icons/si";
 import { RiSupabaseFill } from "react-icons/ri";
 import { MdOutlineWeb } from "react-icons/md";
+import { SiMongodb } from "react-icons/si";
+import { SiNodedotjs } from "react-icons/si";
+
 
 import GalaxyBackground from "./GalaxyBackgroundParallax"; // <- our new galaxy background
 
@@ -32,7 +35,9 @@ export default function Bio() {
     { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
     { name: "Zustand", icon: <TbBrandRedux className="text-purple-600" /> },
     { name: "Tailwind", icon: <RiTailwindCssFill className="text-blue-500" /> },
-    { name: "Supabase", icon: <RiSupabaseFill className="text-green-500" /> },
+    { name: "Supabase", icon: <RiSupabaseFill className="text-emerald-500" /> },
+    { name: "MongoDB", icon: <SiMongodb className="text-lime-600" /> },
+    { name: "Node.Js", icon: <SiNodedotjs className="text-green-600" /> },
   ];
 
   // ===== Mounted State =====
