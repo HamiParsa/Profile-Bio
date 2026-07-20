@@ -74,7 +74,7 @@ Project highlights:
 ## 👨‍💻 Author
 
 **Developed by:** [Hami Parsa](https://github.com/hamiparsa)  
-💬 Front-End Developer | Modern, interactive web projects  
+💬 Full Stack Developer | Modern, interactive web projects  
 
 ---
 
