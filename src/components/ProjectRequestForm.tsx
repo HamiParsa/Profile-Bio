@@ -1,153 +1,200 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "emailjs-com";
-import { FaUser, FaPhone, FaCommentDots, FaTimes } from "react-icons/fa";
+import { 
+  FaUser, 
+  FaPhone, 
+  FaCommentDots, 
+  FaTimes,
+  FaCheckCircle,
+  FaPaperPlane
+} from "react-icons/fa";
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: "", number: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [particles, setParticles] = useState<{ top: number; left: number; size: number; delay: number; color: string }[]>([]);
 
-  useEffect(() => {
-    const colors = ["#EC4899", "#8B5CF6", "#3B82F6", "#F59E0B", "#10B981"];
-    setParticles(
-      Array.from({ length: 30 }).map(() => ({
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size: Math.random() * 4 + 2,
-        delay: Math.random() * 5,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      }))
-    );
-  }, []);
-
-  const sendEmail = (e: React.FormEvent) => {
-    e.preventDefault();
-    emailjs
-      .send("service_97usflj", "template_m9immuc", form, "q1s3x3DSUxpAVErUh")
-      .then(
-        () => {
-          setForm({ name: "", number: "", message: "" });
-          setShowModal(true);
-        },
-        (error) => {
-          console.error(error);
-          alert("Failed to send message ❌");
-        }
-      );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  return (
-    <div className="relative max-w-3xl mt-[150px] mx-auto p-8 backdrop-blur-xl bg-black/60 rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+  const sendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      await emailjs.send(
+        "service_97usflj",
+        "template_m9immuc",
+        form,
+        "q1s3x3DSUxpAVErUh"
+      );
+      setForm({ name: "", number: "", message: "" });
+      setShowModal(true);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to send message");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-      {/* Neon Particles */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        {particles.map((p, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full opacity-60 animate-floatSlow"
-            style={{
-              top: `${p.top}%`,
-              left: `${p.left}%`,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              background: p.color,
-              boxShadow: `0 0 10px ${p.color}, 0 0 20px ${p.color}`,
-              animationDelay: `${p.delay}s`,
-            }}
-          />
-        ))}
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowModal(false);
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  return (
+    <section id="contact" className="min-h-screen flex items-center justify-center px-4 py-20 bg-black">
+      
+      {/* Simple Glow */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Title */}
-      <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-gradient-x drop-shadow-[0_0_15px_rgba(236,72,153,0.6)]">
-        Contact Me
-      </h2>
-
-      {/* Form */}
-      <form onSubmit={sendEmail} className="flex flex-col gap-6">
-        {[
-          { key: "name", placeholder: "Your Name", type: "text", icon: FaUser, color: "pink" },
-          { key: "number", placeholder: "Your Number", type: "tel", icon: FaPhone, color: "indigo" },
-        ].map((field) => (
-          <div key={field.key} className="relative group">
-            <field.icon className={`absolute top-1/2 left-4 -translate-y-1/2 text-gray-400 text-xl group-hover:text-${field.color}-400 transition-all duration-300`} />
-            <input
-              type={field.type}
-              placeholder={field.placeholder}
-              value={form[field.key as keyof typeof form]}
-              onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-              className={`w-full p-4 pl-12 rounded-2xl bg-white/10 text-white placeholder-gray-400 text-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-${field.color}-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300`}
-              required
-            />
-          </div>
-        ))}
-
-        {/* Message */}
-        <div className="relative group">
-          <FaCommentDots className="absolute top-4 left-4 text-gray-400 text-xl group-hover:text-pink-500 transition-all duration-300" />
-          <textarea
-            placeholder="Your Message"
-            value={form.message}
-            onChange={(e) => setForm({ ...form, message: e.target.value })}
-            className="w-full p-4 pl-12 rounded-2xl bg-white/10 text-white placeholder-gray-400 text-lg shadow-inner h-44 resize-none focus:outline-none focus:ring-2 focus:ring-pink-500 focus:shadow-[0_0_20px_rgba(236,72,153,0.7)] transition-all duration-300"
-            required
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="relative overflow-hidden px-8 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-2xl font-extrabold text-white text-lg shadow-2xl transform transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_60px_rgba(236,72,153,0.6)] before:absolute before:inset-0 before:bg-white/20 before:opacity-0 hover:before:opacity-30"
+      <div className="max-w-2xl w-full relative z-10">
+        
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10"
         >
-          Send Message
-        </button>
-      </form>
+          <h2 className="text-4xl sm:text-5xl font-light text-white tracking-tight">
+            Contact
+          </h2>
+          <div className="w-12 h-0.5 bg-white/20 mx-auto mt-3" />
+          <p className="text-gray-500 text-sm mt-4">
+            Lets work together
+          </p>
+        </motion.div>
 
-      {/* Modal for Success */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="relative max-w-md w-full p-8 rounded-3xl backdrop-blur-xl bg-black/60 shadow-2xl border border-white/20">
-            <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl"
+        {/* Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sm:p-8"
+        >
+          <form onSubmit={sendEmail} className="space-y-4">
+            
+            {/* Name + Phone */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="relative">
+                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={15} />
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3.5 bg-black/50 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-white/30 transition-all duration-300"
+                  required
+                />
+              </div>
+              <div className="relative">
+                <FaPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={15} />
+                <input
+                  type="tel"
+                  name="number"
+                  placeholder="Phone"
+                  value={form.number}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3.5 bg-black/50 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-white/30 transition-all duration-300"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className="relative">
+              <FaCommentDots className="absolute left-4 top-4 text-gray-600" size={15} />
+              <textarea
+                name="message"
+                placeholder="Message"
+                value={form.message}
+                onChange={handleChange}
+                rows={4}
+                className="w-full pl-11 pr-4 py-3.5 bg-black/50 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-white/30 transition-all duration-300 resize-none"
+                required
+              />
+            </div>
+
+            {/* Submit */}
+            <motion.button
+              type="submit"
+              disabled={isSubmitting}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              className={`w-full py-3.5 text-sm font-medium tracking-wider rounded-xl transition-all duration-300 ${
+                isSubmitting
+                  ? "bg-white/5 text-gray-500 cursor-not-allowed"
+                  : "bg-white text-black hover:bg-white/90"
+              }`}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  Sending
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  Send
+                  <FaPaperPlane size={13} />
+                </span>
+              )}
+            </motion.button>
+          </form>
+        </motion.div>
+
+        {/* Modal */}
+        <AnimatePresence>
+          {showModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
               onClick={() => setShowModal(false)}
             >
-              <FaTimes />
-            </button>
-            <h3 className="text-2xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-green-500 to-green-600 animate-gradient-x">
-              ✅ Message Sent
-            </h3>
-            <p className="text-gray-200 mb-6">Your message has been successfully sent. I will get back to you shortly!</p>
-            <button
-              className="w-full py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-2xl font-bold text-white shadow-2xl hover:scale-105 transform transition-all duration-300"
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="relative max-w-sm w-full bg-[#111] border border-white/10 rounded-2xl p-8 text-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
+                >
+                  <FaTimes size={18} />
+                </button>
 
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes gradient-x {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 8s ease infinite;
-        }
-        @keyframes floatSlow {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(15px); }
-        }
-        .animate-floatSlow {
-          animation: floatSlow 6s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                  <FaCheckCircle className="text-white/60 text-2xl" />
+                </div>
+
+                <h3 className="text-xl font-light text-white mb-2">Sent!</h3>
+
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="mt-6 w-full py-2.5 bg-white text-black text-sm font-medium rounded-xl hover:bg-white/90 transition-all duration-300"
+                >
+                  Done
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
   );
 }
