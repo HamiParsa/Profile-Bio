@@ -1,248 +1,222 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { FaHtml5, FaCss3Alt, FaReact, FaLaptopCode } from "react-icons/fa6";
+import { useState, useEffect, useRef } from "react";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { 
+  FaHtml5, 
+  FaCss3Alt, 
+  FaReact, 
+  FaLaptopCode,
+} from "react-icons/fa6";
 import { IoLogoJavascript } from "react-icons/io5";
-import { RiNextjsFill, RiTailwindCssFill } from "react-icons/ri";
-import { GiChessKing } from "react-icons/gi";
+import { 
+  RiNextjsFill, 
+  RiSupabaseFill,
+  RiTailwindCssFill
+} from "react-icons/ri";
 import { TbBrandRedux } from "react-icons/tb";
-import { SiTypescript } from "react-icons/si";
-import { RiSupabaseFill } from "react-icons/ri";
-import { MdOutlineWeb } from "react-icons/md";
-import { SiMongodb } from "react-icons/si";
-import { SiNodedotjs } from "react-icons/si";
+import { 
+  SiTypescript, 
+  SiMongodb, 
+  SiNodedotjs,
+  SiExpress,
+  SiPython,
+  SiSqlite
+} from "react-icons/si";
+import { MdEmail, MdLocationOn } from "react-icons/md";
 
+const skills = [
+  { name: "HTML", icon: <FaHtml5 className="text-gray-400" /> },
+  { name: "CSS", icon: <FaCss3Alt className="text-gray-400" /> },
+  { name: "JavaScript", icon: <IoLogoJavascript className="text-gray-400" /> },
+  { name: "React", icon: <FaReact className="text-gray-400" /> },
+  { name: "Next.js", icon: <RiNextjsFill className="text-gray-400" /> },
+  { name: "TypeScript", icon: <SiTypescript className="text-gray-400" /> },
+  { name: "Zustand", icon: <TbBrandRedux className="text-gray-400" /> },
+  { name: "Tailwind", icon: <RiTailwindCssFill className="text-gray-400" /> },
+  { name: "Supabase", icon: <RiSupabaseFill className="text-gray-400" /> },
+  { name: "MongoDB", icon: <SiMongodb className="text-gray-400" /> },
+  { name: "Node.js", icon: <SiNodedotjs className="text-gray-400" /> },
+  { name: "Express.js", icon: <SiExpress className="text-gray-400" /> },
+  { name: "Python", icon: <SiPython className="text-gray-400" /> },
+  { name: "SQLite", icon: <SiSqlite className="text-gray-400" /> },
+];
 
-import GalaxyBackground from "./GalaxyBackgroundParallax"; // <- our new galaxy background
-
-// ===============================
-// Bio Component
-// ===============================
 export default function Bio() {
-  // ===== Skills Array =====
-  // Each skill has a name and an icon component with optional color
-  const skills = [
-    { name: "HTML", icon: <FaHtml5 className="text-orange-400" /> },
-    { name: "CSS", icon: <FaCss3Alt className="text-blue-500" /> },
-    {
-      name: "JavaScript",
-      icon: <IoLogoJavascript className="text-amber-300" />,
-    },
-    { name: "React", icon: <FaReact className="text-blue-900" /> },
-    { name: "Next.js", icon: <RiNextjsFill /> },
-    { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-    { name: "Zustand", icon: <TbBrandRedux className="text-purple-600" /> },
-    { name: "Tailwind", icon: <RiTailwindCssFill className="text-blue-500" /> },
-    { name: "Supabase", icon: <RiSupabaseFill className="text-emerald-500" /> },
-    { name: "MongoDB", icon: <SiMongodb className="text-lime-600" /> },
-    { name: "Node.Js", icon: <SiNodedotjs className="text-green-600" /> },
-  ];
-
-  // ===== Mounted State =====
-  // Used to ensure animations and motion values only run on the client
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useTransform(mouseY, [-100, 100], [6, -6]);
+  const rotateY = useTransform(mouseX, [-100, 100], [-6, 6]);
+  const springRotateX = useSpring(rotateX, { damping: 20, stiffness: 300 });
+  const springRotateY = useSpring(rotateY, { damping: 20, stiffness: 300 });
 
-  // ===== Mouse Tilt Animation =====
-  // motionX & motionY track mouse movement
-  const motionX = useMotionValue(0);
-  const motionY = useMotionValue(0);
-  // rotateY & rotateX transform motion values into rotation degrees
-  const rotateY = useTransform(motionX, (val) => val);
-  const rotateX = useTransform(motionY, (val) => -val);
-
-  // ===== Mouse Move Effect =====
-  // Moves the profile image slightly based on mouse position
   useEffect(() => {
-    if (!mounted) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 30; // Rotate up to 15 degrees
-      const y = (e.clientY / window.innerHeight - 0.5) * 30;
-      motionX.set(x);
-      motionY.set(y);
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mounted, motionX, motionY]);
+    setMounted(true);
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (rect) {
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      mouseX.set(x);
+      mouseY.set(y);
+    }
+  };
+
+  if (!mounted) return null;
 
   return (
-    <div
+    <section
       id="about"
-      className="relative mt-20 min-h-screen font-bricolage overflow-hidden"
+      className="relative min-h-screen w-full bg-black flex items-center justify-center px-4 py-20 overflow-hidden"
     >
-      {/* ===== Galaxy Background Component ===== */}
-      <GalaxyBackground />
+      {/* Minimal Grid */}
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:40px_40px]" />
+      
+      {/* Single Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl" />
 
-      {/* ===============================
-          Main Content
-          =============================== */}
-      <div className="flex flex-col lg:flex-row-reverse items-center justify-center mt-36 px-6 lg:px-0 gap-16">
-        {/* ===== Profile Image with Glow & Tilt ===== */}
-        <motion.div
-          className="relative w-80 h-80 lg:w-96 lg:h-96 perspective z-10"
-          style={{ rotateX, rotateY }}
-          animate={{ y: ["0%", "-3%", "0%"] }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
-          }}
-        >
-          {/* Layered Gradient Glows */}
-          <div className="absolute inset-0 rounded-2xl blur-3xl opacity-60"></div>
-          <div className="absolute inset-0 rounded-2xl blur-2xl opacity-40 "></div>
-          <div className="absolute inset-0 rounded-2xl blur-xl opacity-30 "></div>
-
-          <Image
-            src="https://yourimageshare.com/ib/Sw14Iz6zvv.png"
-            width={400}
-            height={400}
-            alt="Hami Parsa"
-            className="relative mt-5 rounded-2xl shadow-2xl border border-gray-800"
-          />
-        </motion.div>
-
-        {/* ===== Text Section ===== */}
-        <div className="text-gray-100 max-w-lg flex flex-col gap-6 z-10 relative">
-          {/* Name with Gradient & Icon */}
-          <h1 className="flex items-center gap-2 text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-textGradient">
-            Im Hami Parsa
-            <GiChessKing className="text-yellow-400 text-4xl animate-bounce" />
-          </h1>
-
-          {/* Role */}
-          <h2 className="text-2xl flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-300">
-            Full Stack Developer{" "}
-            <FaLaptopCode className="text-indigo-400 text-2xl" />
-          </h2>
-          <hr className="border-gray-800" />
-
-          {/* ===== Skills Grid ===== */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            {skills.map((skill) => (
-              <div
-                key={skill.name}
-                className="flex items-center gap-2 bg-gray-800/40 hover:bg-gray-700/60 px-4 py-3 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-110 hover:rotate-3 hover:shadow-purple-500/70"
-              >
-                {skill.icon}
-                <span className="text-lg font-semibold">{skill.name}</span>
+      <div className="relative z-10 max-w-6xl mx-auto w-full">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          
+          {/* Profile Image */}
+          <motion.div
+            ref={cardRef}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="flex-shrink-0"
+            style={{
+              rotateX: isHovered ? springRotateX : 0,
+              rotateY: isHovered ? springRotateY : 0,
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <div className="relative w-72 h-72 lg:w-80 lg:h-80">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/227557537?v=4"
+                  alt="Hami Parsa"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
-            ))}
+
+              {/* Status */}
+              <div className="absolute -bottom-2 -right-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full text-xs font-medium text-white/60">
+                Available
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Content */}
+          <div className="flex-1 text-center lg:text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 border border-white/10 rounded-full mb-4 lg:mb-3">
+                <span className="w-1 h-1 bg-white/40 rounded-full" />
+                <span className="text-[10px] font-medium text-white/40 tracking-wider">OPEN TO WORK</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mb-2 leading-tight">
+                Hami Parsa
+                <span className="inline-block ml-2 text-white/20">.</span>
+              </h1>
+
+              <p className="text-lg sm:text-xl text-white/40 mb-4 flex items-center justify-center lg:justify-start gap-2">
+                Full Stack Developer
+                <FaLaptopCode className="text-white/20" size={20} />
+              </p>
+
+              <p className="text-white/30 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Crafting modern web applications with clean code and thoughtful design.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4 mt-4 justify-center lg:justify-start">
+                <div className="flex items-center gap-2 text-sm text-white/20">
+                  <MdEmail size={16} />
+                  parsa.dev@gmail.com
+                </div>
+                <span className="w-px h-3 bg-white/5 hidden sm:block" />
+                <div className="flex items-center gap-2 text-sm text-white/20">
+                  <MdLocationOn size={16} />
+                  Iran, Arak
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Skills */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mt-8"
+            >
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                {skills.map((skill, index) => (
+                  <motion.span
+                    key={skill.name}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.1 + index * 0.015 }}
+                    className="flex items-center gap-1.5 px-3 py-1 text-[11px] text-white/30 border border-white/5 rounded-full"
+                  >
+                    <span className="text-sm">{skill.icon}</span>
+                    {skill.name}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="mt-8 flex flex-wrap items-center gap-3 justify-center lg:justify-start"
+            >
+              <a
+                href="https://hamiparsa.github.io/About-Me/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-sm font-medium rounded-xl transition-all duration-300"
+              >
+                About
+              </a>
+              
+              <a
+                href="https://github.com/hamiparsa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-sm font-medium rounded-xl transition-all duration-300"
+              >
+                GitHub
+              </a>
+
+              <a
+                href="#contact"
+                className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded-xl transition-all duration-300 hover:bg-white/90"
+              >
+                Contact
+              </a>
+            </motion.div>
           </div>
         </div>
       </div>
-
-      {/* ===== Bio Paragraph ===== */}
-      <p className="text-white text-center mt-20 max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed">
-        Hi, Im <span className="font-bold text-pink-500">Hami Parsa</span> — a{" "}
-        <span className="text-indigo-400 font-semibold">
-          passionate Full Stack Developer
-        </span>{" "}
-        crafting{" "}
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 font-bold">
-          modern, interactive, and visually stunning
-        </span>{" "}
-        web experiences.
-      </p>
-
-      {/* Awesome Website Button */}
-      <div className="flex justify-center mt-10 z-10 relative">
-        <a
-          href="https://hamiparsa.github.io/About-Me/" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 font-bold text-lg text-white transition-all duration-300 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-purple-500/40 hover:scale-105 active:scale-95 overflow-hidden cursor-pointer"
-        >
-          {/* Ripple effect on click */}
-          <span className="absolute inset-0 w-full h-full bg-white opacity-0 group-active:opacity-30 transition-opacity duration-300 rounded-2xl"></span>
-
-          {/* Animated background on hover */}
-          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-600 via-pink-600 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10"></span>
-
-          {/* Website Icon */}
-          <MdOutlineWeb className="text-2xl group-hover:rotate-12 transition-transform duration-300" />
-
-          {/* Button Text */}
-          <span>Visit About Me Website</span>
-
-          {/* Animated underline */}
-          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-500 ease-out"></span>
-        </a>
-      </div>
-
-      {/* ===== Custom Animations ===== */}
-      <style jsx>{`
-        .perspective {
-          perspective: 1000px;
-        }
-
-        /* Glow Animations for Profile Image */
-        @keyframes glow1 {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-        @keyframes glow2 {
-          0% {
-            background-position: 100% 0%;
-          }
-          50% {
-            background-position: 0% 100%;
-          }
-          100% {
-            background-position: 100% 0%;
-          }
-        }
-        @keyframes glow3 {
-          0% {
-            background-position: 50% 0%;
-          }
-          50% {
-            background-position: 50% 100%;
-          }
-          100% {
-            background-position: 50% 0%;
-          }
-        }
-        .animate-glow1 {
-          background-size: 200% 200%;
-          animation: glow1 6s ease-in-out infinite;
-        }
-        .animate-glow2 {
-          background-size: 200% 200%;
-          animation: glow2 8s ease-in-out infinite;
-        }
-        .animate-glow3 {
-          background-size: 200% 200%;
-          animation: glow3 10s ease-in-out infinite;
-        }
-
-        /* Gradient Text Animation */
-        @keyframes textGradient {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-        .animate-textGradient {
-          background-size: 200% 200%;
-          animation: textGradient 6s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
+    </section>
   );
 }
