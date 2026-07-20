@@ -1,115 +1,216 @@
 "use client";
 
-import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa6";
-
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { FaGithub, FaLinkedin, FaTelegramPlane, FaHeart, FaStar, FaCodeBranch } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 export default function Footer() {
-  const [particles, setParticles] = useState<{ top: number; left: number; xOffset: number; delay: number; color: string }[]>([]);
+  const [year, setYear] = useState(2024);
+  const [repoData, setRepoData] = useState({
+    stars: 0,
+    forks: 0,
+    loading: true,
+  });
 
   useEffect(() => {
-    const colors = ["#EC4899", "#8B5CF6", "#3B82F6", "#F59E0B", "#10B981"];
-    setParticles(
-      Array.from({ length: 40 }).map(() => ({
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        xOffset: Math.random() * 300 - 150,
-        delay: Math.random() * 10,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      }))
-    );
+    setYear(new Date().getFullYear());
+
+    // Fetch GitHub repo stats
+    const fetchRepoStats = async () => {
+      try {
+        const response = await fetch(
+          "https://api.github.com/repos/HamiParsa/Profile-Bio"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setRepoData({
+            stars: data.stargazers_count || 0,
+            forks: data.forks_count || 0,
+            loading: false,
+          });
+        } else {
+          setRepoData((prev) => ({ ...prev, loading: false }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch repo stats:", error);
+        setRepoData((prev) => ({ ...prev, loading: false }));
+      }
+    };
+
+    fetchRepoStats();
   }, []);
 
   const socialLinks = [
-    { icon: <FaGithub size={32} />, link: "https://github.com/hamiparsa", color: "#EC4899" },
-    { icon: <FaLinkedin size={32} />, link: "https://www.linkedin.com/in/HamiParsa", color: "#3B82F6" },
-    { icon: <FaTelegramPlane size={32} />, link: "https://t.me/hamiparsa", color: "#1DA1F2" },
-    { icon: <FaInstagram size={32} />, link: "https://www.instagram.com/hamii.parsa", color: "#1DA1F2" },
+    { icon: <FaGithub size={22} />, link: "https://github.com/hamiparsa", label: "GitHub", color: "hover:text-white" },
+    { icon: <FaLinkedin size={22} />, link: "https://www.linkedin.com/in/HamiParsa", label: "LinkedIn", color: "hover:text-blue-400" },
+    { icon: <FaTelegramPlane size={22} />, link: "https://t.me/hamiparsa", label: "Telegram", color: "hover:text-blue-500" },
+    { icon: <FaInstagram size={22} />, link: "https://www.instagram.com/hamii.parsa", label: "Instagram", color: "hover:text-pink-500" },
+  ];
+
+  const quickLinks = [
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Contact", href: "#contact" },
   ];
 
   return (
-    <footer className="relative mt-[150px] text-white pt-20 pb-10 overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-600 opacity-40 animate-gradientSlow blur-3xl"></div>
+    <footer className="relative bg-[#0a0a0a] border-t border-white/5 overflow-hidden">
+      
+      {/* Background Glow */}
+      <div className="absolute inset-0">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-white/5 rounded-full blur-3xl" />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+        
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+          
+          {/* Brand */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="md:col-span-4 space-y-4"
+          >
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Hami<span className="text-gray-500">.</span>Parsa
+            </h2>
+            <p className="text-sm text-gray-500 max-w-xs leading-relaxed">
+              Full Stack Developer crafting modern web experiences with passion and precision.
+            </p>
+            
+            {/* Social Links */}
+            <div className="flex items-center gap-3 pt-2">
+              {socialLinks.map((item, index) => (
+                <motion.a
+                  key={index}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.label}
+                  whileHover={{ y: -3, scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-500 ${item.color} transition-all duration-300 border border-white/5 hover:border-white/10`}
+                >
+                  {item.icon}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Quick Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="md:col-span-2"
+          >
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              Navigation
+            </h3>
+            <ul className="space-y-2.5">
+              {quickLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-gray-500 hover:text-white transition-colors duration-300"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* GitHub Repo */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            viewport={{ once: true }}
+            className="md:col-span-3"
+          >
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              GitHub Repo
+            </h3>
+            <a
+              href="https://github.com/HamiParsa/Profile-Bio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-4 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 rounded-xl transition-all duration-300"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <FaGithub className="text-gray-400 group-hover:text-white transition-colors" size={16} />
+                <span className="text-sm text-white/60 group-hover:text-white transition-colors">
+                  Profile-Bio
+                </span>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-gray-500">
+                <span className="flex items-center gap-1">
+                  <FaStar size={12} className="text-yellow-500" />
+                  {repoData.loading ? "..." : repoData.stars}
+                </span>
+                <span className="flex items-center gap-1">
+                  <FaCodeBranch size={12} />
+                  {repoData.loading ? "..." : repoData.forks}
+                </span>
+              </div>
+            </a>
+          </motion.div>
+
+          {/* Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="md:col-span-3"
+          >
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              Lets Talk
+            </h3>
+            <p className="text-sm text-gray-500 mb-2">
+              hamiparsa@gmail.com
+            </p>
+            <p className="text-sm text-gray-500">
+              Iran, Arak
+            </p>
+            <div className="flex items-center gap-2 mt-4">
+              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-xs text-gray-500">Available for work</span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom Bar */}
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
-          className="relative rounded-3xl bg-black/50 backdrop-blur-3xl border border-white/20 shadow-[0_0_30px_rgba(236,72,153,0.4)] p-10 flex flex-col md:flex-row items-center justify-between gap-10 overflow-hidden"
+          className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
-          {/* Neon Glow Backplate */}
-          <div className="absolute inset-0 rounded-3xl  opacity-40 blur-xl -z-10 animate-pulseSlow"></div>
-
-          <motion.h1 whileHover={{ scale: 1.05 }} className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent tracking-wide drop-shadow-[0_0_25px_rgba(236,72,153,0.7)]">
-            Hami Parsa
-          </motion.h1>
-
-          <div className="flex gap-10">
-            {socialLinks.map((item, i) => (
-              <motion.a
-                key={i}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.4, rotate: 10 }}
-                className="text-gray-300 transition-all duration-300 transform hover:text-white hover:drop-shadow-[0_0_20px_rgb(236,72,153)]"
-              >
-                {item.icon}
-              </motion.a>
-            ))}
+          <p className="text-xs text-gray-600">
+            © {year} Hami Parsa. All rights reserved.
+          </p>
+          
+          <div className="flex items-center gap-4 text-xs text-gray-600">
+            <span>Built with</span>
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="text-red-400"
+            >
+              <FaHeart size={12} />
+            </motion.span>
+            <span>Hami Parsa</span>
           </div>
-
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-gray-300 font-medium text-center md:text-right text-lg drop-shadow-md">
-            © {new Date().getFullYear()} Hami Parsa. All Rights Reserved.
-          </motion.p>
         </motion.div>
       </div>
-
-      {/* Gradient line */}
-      <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} viewport={{ once: true }} className="mt-14 h-1 w-2/3 mx-auto rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 shadow-[0_0_25px_rgba(236,72,153,0.7)]"></motion.div>
-
-      {/* Floating Neon Blobs */}
-      <div className="absolute -top-16 left-10 w-40 h-40 bg-cyan-500/30 rounded-full blur-3xl animate-floatSlow"></div>
-      <div className="absolute bottom-0 right-10 w-52 h-52 bg-purple-500/30 rounded-full blur-3xl animate-floatSlow delay-2000"></div>
-
-      {/* Floating Neon Particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {particles.map((p, i) => (
-          <motion.span
-            key={i}
-            className="absolute w-2 h-2 rounded-full"
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: [0, 1, 0], y: [-20, -100], x: p.xOffset }}
-            transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: p.delay }}
-            style={{ top: `${p.top}%`, left: `${p.left}%`, backgroundColor: p.color, boxShadow: `0 0 10px ${p.color}, 0 0 20px ${p.color}` }}
-          />
-        ))}
-      </div>
-
-      <style jsx>{`
-        @keyframes gradientSlow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        @keyframes floatSlow {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(30px); }
-        }
-        @keyframes pulseSlow {
-          0%, 100% { opacity: 0.35; }
-          50% { opacity: 0.7; }
-        }
-        .animate-gradientSlow { background-size: 200% 200%; animation: gradientSlow 30s ease infinite; }
-        .animate-floatSlow { animation: floatSlow 12s ease-in-out infinite; }
-        .animate-pulseSlow { animation: pulseSlow 4s ease-in-out infinite; }
-        .delay-2000 { animation-delay: 2s; }
-      `}</style>
     </footer>
   );
 }
