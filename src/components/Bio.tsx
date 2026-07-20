@@ -149,7 +149,7 @@ export default function Bio() {
               <div className="flex flex-wrap items-center gap-4 mt-4 justify-center lg:justify-start">
                 <div className="flex items-center gap-2 text-sm text-white/20">
                   <MdEmail size={16} />
-                  parsa.dev@gmail.com
+                  parsa.developer001@gmail.com
                 </div>
                 <span className="w-px h-3 bg-white/5 hidden sm:block" />
                 <div className="flex items-center gap-2 text-sm text-white/20">
