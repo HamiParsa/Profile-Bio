@@ -64,7 +64,6 @@ Project highlights:
 <div align="center">
   <img src="/pic1.png" width="700px" />
   <br/><br/>
-  
 </div>
 
 ---
