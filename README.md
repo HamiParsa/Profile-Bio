@@ -65,7 +65,6 @@ Project highlights:
   <img src="/pic1.png" width="700px" />
   <br/><br/>
   <img src="/pic2.png" width="700px" />
-  
 </div>
 
 ---
