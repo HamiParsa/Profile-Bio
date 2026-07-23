@@ -63,10 +63,6 @@ Project highlights:
 
 <div align="center">
   <img src="/pic1.png" width="700px" />
-  <br/><br/>
-  <img src="/pic2.png" width="700px" />
-  <br/><br/>
-  <img src="/pic3.png" width="700px" />
 </div>
 
 ---
@@ -74,7 +70,7 @@ Project highlights:
 ## 👨‍💻 Author
 
 **Developed by:** [Hami Parsa](https://github.com/hamiparsa)  
-💬 Front-End Developer | Modern, interactive web projects  
+💬 Full Stack Developer | Modern, interactive web projects  
 
 ---
 
