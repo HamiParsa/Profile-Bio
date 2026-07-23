@@ -51,7 +51,7 @@ const projectsData = [
   {
     id: 2,
     name: "Movies",
-    url: "https://imaginative-granita-28d88b.netlify.app/",
+    url: "https://hamiparsa.github.io/Movie/",
     github: "https://github.com/HamiParsa/Movie",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Movie/main/pic1.png",
