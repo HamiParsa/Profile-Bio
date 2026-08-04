@@ -1,26 +1,42 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  FaGithub,
+  FaGlobe,
+  FaHeart,
+  FaStar,
+  FaReact,
+  FaSearch,
   FaArrowLeft,
   FaArrowRight,
-  FaGlobe,
-  FaGithub,
-  FaStar,
-  FaEye,
-  FaHeart,
-  FaBookmark,
-  FaSearch,
   FaCode,
+  FaFolderOpen,
   FaRocket,
-  FaReact,
+  FaCheck,
+  FaCircle,
 } from "react-icons/fa";
 import { SiNextdotjs, SiTypescript, SiTailwindcss } from "react-icons/si";
-
 import { TbBrandRedux } from "react-icons/tb";
 
-const projectsData = [
+// ============================================================
+// TECH ICONS
+// ============================================================
+
+const techIcons = {
+  React: <FaReact className="text-cyan-400" />,
+  "Next.js": <SiNextdotjs className="text-white" />,
+  TypeScript: <SiTypescript className="text-blue-500" />,
+  Tailwind: <SiTailwindcss className="text-cyan-400" />,
+  Zustand: <TbBrandRedux className="text-purple-400" />,
+};
+
+// ============================================================
+// PROJECTS DATA
+// ============================================================
+
+const allProjects = [
   {
     id: 1,
     name: "Fast Food Menu",
@@ -28,30 +44,21 @@ const projectsData = [
     github: "https://github.com/HamiParsa/Menu-Fast-Food",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Menu-Fast-Food/main/pic1.png",
-      "https://github.com/HamiParsa/Menu-Fast-Food/raw/main/pic2.png",
+      "https://raw.githubusercontent.com/HamiParsa/Menu-Fast-Food/main/pic2.png",
       "https://raw.githubusercontent.com/HamiParsa/Menu-Fast-Food/main/pic3.png",
-      "https://github.com/HamiParsa/Menu-Fast-Food/raw/main/pic4.png",
-      "https://github.com/HamiParsa/Menu-Fast-Food/raw/main/pic5.png",
+      "https://raw.githubusercontent.com/HamiParsa/Menu-Fast-Food/main/pic4.png",
+      "https://raw.githubusercontent.com/HamiParsa/Menu-Fast-Food/main/pic5.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-      { name: "Zustand", icon: <TbBrandRedux className="text-purple-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind", "Zustand"],
     description:
       "Modern fast food ordering interface with real-time cart management and seamless checkout experience.",
     featured: true,
-    color: "#F59E0B",
-    likes: 124,
-    views: 1240,
     category: "E-commerce",
   },
   {
     id: 2,
     name: "Movies",
-    url: "https://hamiparsa.github.io/Movie/",
+    url: "https://imaginative-granita-28d88b.netlify.app/",
     github: "https://github.com/HamiParsa/Movie",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Movie/main/pic1.png",
@@ -60,19 +67,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Movie/main/pic4.png",
       "https://raw.githubusercontent.com/HamiParsa/Movie/main/pic5.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-      { name: "Zustand", icon: <TbBrandRedux className="text-purple-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind", "Zustand"],
     description:
       "Browse and discover movies with advanced filtering, search, and personalized recommendations.",
     featured: false,
-    color: "#3B82F6",
-    likes: 89,
-    views: 890,
     category: "Entertainment",
   },
   {
@@ -81,23 +79,15 @@ const projectsData = [
     url: "https://stellular-salamander-2f94ef.netlify.app/",
     github: "https://github.com/HamiParsa/Game-Zone",
     images: [
-      "https://github.com/HamiParsa/Game-Zone/raw/main/pic1.png",
+      "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic2.png",
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Collection of mini-games with sleek gaming interface and competitive leaderboards.",
     featured: false,
-    color: "#8B5CF6",
-    likes: 156,
-    views: 1560,
     category: "Gaming",
   },
   {
@@ -108,18 +98,10 @@ const projectsData = [
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Music-Player/main/pic1.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Beautiful music player with playlist management and audio controls.",
     featured: false,
-    color: "#EC4899",
-    likes: 67,
-    views: 670,
     category: "Music",
   },
   {
@@ -136,19 +118,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Kouman/main/pic6.png",
       "https://raw.githubusercontent.com/HamiParsa/Kouman/main/pic7.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-      { name: "Zustand", icon: <TbBrandRedux className="text-purple-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind", "Zustand"],
     description:
       "Comprehensive e-commerce platform with modern shopping experience and payment integration.",
     featured: true,
-    color: "#10B981",
-    likes: 203,
-    views: 2030,
     category: "E-commerce",
   },
   {
@@ -157,23 +130,15 @@ const projectsData = [
     url: "https://hamiparsa.github.io/Coffee-Shop/",
     github: "https://github.com/HamiParsa/Coffee-Shop",
     images: [
-      "https://github.com/HamiParsa/Coffee-Shop/raw/main/pic1.png",
+      "https://raw.githubusercontent.com/HamiParsa/Coffee-Shop/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Coffee-Shop/main/pic2.png",
       "https://raw.githubusercontent.com/HamiParsa/Coffee-Shop/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Coffee-Shop/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Cozy coffee shop website with menu browsing, ordering, and loyalty program.",
     featured: false,
-    color: "#F59E0B",
-    likes: 67,
-    views: 670,
     category: "Food & Drink",
   },
   {
@@ -184,18 +149,10 @@ const projectsData = [
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Galaxy/main/pic1.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Interactive space exploration experience with stunning visuals and animations.",
     featured: false,
-    color: "#7C3AED",
-    likes: 92,
-    views: 920,
     category: "Interactive",
   },
   {
@@ -209,18 +166,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Eminem/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Eminem/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Tribute page dedicated to Eminem with his music, biography, and discography.",
     featured: false,
-    color: "#EF4444",
-    likes: 78,
-    views: 780,
     category: "Tribute",
   },
   {
@@ -234,18 +183,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/TMNT/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/TMNT/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Fan site for Teenage Mutant Ninja Turtles with character profiles and history.",
     featured: false,
-    color: "#22C55E",
-    likes: 112,
-    views: 1120,
     category: "Fan Site",
   },
   {
@@ -259,18 +200,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Hyper-Net/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Hyper-Net/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "High-performance networking dashboard with real-time analytics.",
     featured: false,
-    color: "#06B6D4",
-    likes: 134,
-    views: 1340,
     category: "Dashboard",
   },
   {
@@ -284,17 +217,9 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Code-Space/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Code-Space/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description: "Collaborative coding environment with live editing features.",
     featured: false,
-    color: "#6366F1",
-    likes: 98,
-    views: 980,
     category: "Development",
   },
   {
@@ -308,18 +233,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Apple-Store/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Apple-Store/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Apple-inspired storefront with product browsing and seamless checkout.",
     featured: false,
-    color: "#6B7280",
-    likes: 134,
-    views: 1340,
     category: "E-commerce",
   },
   {
@@ -330,18 +247,10 @@ const projectsData = [
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Phone-Music-Player/main/pic1.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Mobile-first music player designed for phone screens with touch controls.",
     featured: false,
-    color: "#EC4899",
-    likes: 89,
-    views: 890,
     category: "Music",
   },
   {
@@ -358,19 +267,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Anime-Shop/main/pic6.png",
       "https://raw.githubusercontent.com/HamiParsa/Anime-Shop/main/pic7.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-      { name: "Zustand", icon: <TbBrandRedux className="text-purple-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind", "Zustand"],
     description:
       "Anime merchandise store with vibrant colorful design and exclusive collections.",
     featured: false,
-    color: "#EC4899",
-    likes: 145,
-    views: 1450,
     category: "E-commerce",
   },
   {
@@ -381,18 +281,10 @@ const projectsData = [
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Js-Compiler/main/pic1.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Lightweight JavaScript compiler with real-time code execution.",
     featured: false,
-    color: "#F59E0B",
-    likes: 78,
-    views: 780,
     category: "Development",
   },
   {
@@ -406,18 +298,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Travel-Mate/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Travel-Mate/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Travel planning app with destination guides, itineraries, and booking integration.",
     featured: false,
-    color: "#06B6D4",
-    likes: 92,
-    views: 920,
     category: "Travel",
   },
   {
@@ -429,18 +313,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Youtube/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Youtube/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "YouTube clone with video browsing, playback, and channel features.",
     featured: false,
-    color: "#EF4444",
-    likes: 156,
-    views: 1560,
     category: "Entertainment",
   },
   {
@@ -452,18 +328,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Task-List/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Task-List/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Productivity task manager with drag-and-drop functionality and categories.",
     featured: false,
-    color: "#8B5CF6",
-    likes: 67,
-    views: 670,
     category: "Productivity",
   },
   {
@@ -477,18 +345,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/My-Restaurant/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/My-Restaurant/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Restaurant website with menu browsing, reservation system, and online ordering.",
     featured: false,
-    color: "#F59E0B",
-    likes: 89,
-    views: 890,
     category: "Food & Drink",
   },
   {
@@ -500,18 +360,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Second-Hand-Shop/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Second-Hand-Shop/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Second-hand marketplace for buying and selling used items with categories.",
     featured: false,
-    color: "#6B7280",
-    likes: 56,
-    views: 560,
     category: "E-commerce",
   },
   {
@@ -524,18 +376,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Instagram/main/pic2.png",
       "https://raw.githubusercontent.com/HamiParsa/Instagram/main/pic3.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Instagram clone with photo sharing, feed, and story features.",
     featured: false,
-    color: "#EC4899",
-    likes: 167,
-    views: 1670,
     category: "Social Media",
   },
   {
@@ -550,18 +394,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Iron-Zone/main/pic4.png",
       "https://raw.githubusercontent.com/HamiParsa/Iron-Zone/main/pic5.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Gym and fitness website with workout plans, schedules, and progress tracking.",
     featured: false,
-    color: "#EF4444",
-    likes: 78,
-    views: 780,
     category: "Fitness",
   },
   {
@@ -576,18 +412,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Luxury-Beauty/main/pic4.png",
       "https://raw.githubusercontent.com/HamiParsa/Luxury-Beauty/main/pic5.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Luxury beauty brand website with product showcases and customer reviews.",
     featured: false,
-    color: "#EC4899",
-    likes: 112,
-    views: 1120,
     category: "Beauty",
   },
   {
@@ -601,18 +429,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Melody-Hub/main/pic3.png",
       "https://raw.githubusercontent.com/HamiParsa/Melody-Hub/main/pic4.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Music discovery platform with curated playlists and artist profiles.",
     featured: false,
-    color: "#8B5CF6",
-    likes: 145,
-    views: 1450,
     category: "Music",
   },
   {
@@ -628,18 +448,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Gta-SanAndreas/main/pic5.png",
       "https://raw.githubusercontent.com/HamiParsa/Gta-SanAndreas/main/pic6.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Fan site for GTA San Andreas with game info, mods, and community features.",
     featured: false,
-    color: "#F59E0B",
-    likes: 189,
-    views: 1890,
     category: "Gaming",
   },
   {
@@ -655,18 +467,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Rockstar-Games/main/pic5.png",
       "https://raw.githubusercontent.com/HamiParsa/Rockstar-Games/main/pic6.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Fan tribute to Rockstar Games with game catalogs, news, and community.",
     featured: false,
-    color: "#EF4444",
-    likes: 156,
-    views: 1560,
     category: "Gaming",
   },
   {
@@ -678,18 +482,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Tesla/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Tesla/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Tesla-inspired website with vehicle configurator, specs, and test drive booking.",
     featured: false,
-    color: "#EF4444",
-    likes: 111,
-    views: 1110,
     category: "Automotive",
   },
   {
@@ -697,19 +493,13 @@ const projectsData = [
     name: "Art The Clown",
     url: "https://hamiparsa.github.io/Art-The-Clown/",
     github: "https://github.com/HamiParsa/Art-The-Clown",
-    images: ["https://github.com/HamiParsa/Art-The-Clown/raw/main/pic1.png"],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
+    images: [
+      "https://raw.githubusercontent.com/HamiParsa/Art-The-Clown/main/pic1.png",
     ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Horror-themed fan site dedicated to the character Art the Clown.",
     featured: false,
-    color: "#EF4444",
-    likes: 45,
-    views: 450,
     category: "Fan Site",
   },
   {
@@ -721,18 +511,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/My-Messenger/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/My-Messenger/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Real-time messaging app with chat rooms, user authentication, and emoji support.",
     featured: false,
-    color: "#3B82F6",
-    likes: 89,
-    views: 890,
     category: "Social Media",
   },
   {
@@ -744,18 +526,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/NewYork/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/NewYork/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Travel guide to New York City with attractions, maps, and insider tips.",
     featured: false,
-    color: "#06B6D4",
-    likes: 78,
-    views: 780,
     category: "Travel",
   },
   {
@@ -767,17 +541,9 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Sexy-Arena/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Sexy-Arena/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description: "Vibrant event venue website with booking and event listings.",
     featured: false,
-    color: "#EC4899",
-    likes: 67,
-    views: 670,
     category: "Events",
   },
   {
@@ -789,18 +555,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Los-Angeles/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Los-Angeles/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Travel guide to Los Angeles with attractions, landmarks, and local favorites.",
     featured: false,
-    color: "#F59E0B",
-    likes: 89,
-    views: 890,
     category: "Travel",
   },
   {
@@ -812,18 +570,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Mia-Kourosh/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Mia-Kourosh/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Personal portfolio website for a creative duo showcasing their work.",
     featured: false,
-    color: "#EC4899",
-    likes: 56,
-    views: 560,
     category: "Portfolio",
   },
   {
@@ -832,21 +582,13 @@ const projectsData = [
     url: "https://hamiparsa.github.io/Keoxer/",
     github: "https://github.com/HamiParsa/Keoxer",
     images: [
-      "https://github.com/HamiParsa/Keoxer/raw/main/pic1.png",
+      "https://raw.githubusercontent.com/HamiParsa/Keoxer/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Keoxer/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Modern SaaS landing page with interactive features and pricing plans.",
     featured: false,
-    color: "#6366F1",
-    likes: 78,
-    views: 780,
     category: "SaaS",
   },
   {
@@ -858,18 +600,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/React-Next/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/React-Next/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Comprehensive guide and reference for React and Next.js with examples.",
     featured: false,
-    color: "#06B6D4",
-    likes: 134,
-    views: 1340,
     category: "Education",
   },
   {
@@ -881,18 +615,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/TripletsCods-Lab/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/TripletsCods-Lab/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Coding lab with tutorials and resources for developers of all levels.",
     featured: false,
-    color: "#8B5CF6",
-    likes: 89,
-    views: 890,
     category: "Education",
   },
   {
@@ -904,18 +630,10 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/My-Dream/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/My-Dream/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Personal dream journal and vision board application with goal tracking.",
     featured: false,
-    color: "#EC4899",
-    likes: 67,
-    views: 670,
     category: "Productivity",
   },
   {
@@ -927,17 +645,9 @@ const projectsData = [
       "https://raw.githubusercontent.com/HamiParsa/Animation-Universe/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Animation-Universe/main/pic2.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description: "Showcase of CSS and Framer Motion animations and effects.",
     featured: false,
-    color: "#7C3AED",
-    likes: 156,
-    views: 1560,
     category: "Interactive",
   },
   {
@@ -953,95 +663,68 @@ const projectsData = [
       "https://yourimageshare.com/ib/2Lpb9kTq4L.png",
       "https://yourimageshare.com/ib/aHF8oVrh4I.png",
     ],
-    tech: [
-      { name: "React", icon: <FaReact className="text-cyan-400" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" /> },
-      { name: "Tailwind", icon: <SiTailwindcss className="text-cyan-400" /> },
-    ],
+    tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
       "Gaming platform with game discovery, reviews, community features, and more.",
     featured: true,
-    color: "#8B5CF6",
-    likes: 178,
-    views: 1780,
     category: "Gaming",
   },
 ];
 
-// Fast image loading helper component
-function FastImage({ src, alt, className }) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
+// ============================================================
+// GITHUB STARS
+// ============================================================
+
+function useGitHubStars(repoUrl) {
+  const [stars, setStars] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => setIsLoaded(true);
-    img.onerror = () => setHasError(true);
-  }, [src]);
+    const fetchStars = async () => {
+      try {
+        const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+        if (!match) {
+          setLoading(false);
+          return;
+        }
+        const [, owner, repo] = match;
+        const res = await fetch(
+          `https://api.github.com/repos/${owner}/${repo}`,
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setStars(data.stargazers_count || 0);
+        }
+        setLoading(false);
+      } catch {
+        setLoading(false);
+      }
+    };
+    fetchStars();
+  }, [repoUrl]);
 
-  if (hasError) {
-    return (
-      <div
-        className={`${className} flex items-center justify-center bg-gray-900`}
-      >
-        <span className="text-2xl">🖼️</span>
-      </div>
-    );
-  }
-
-  return (
-    <div id="projects" className="relative w-full h-full">
-      {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/80">
-          <div className="w-6 h-6 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
-        </div>
-      )}
-      <img
-        src={src}
-        alt={alt}
-        className={`${className} transition-opacity duration-300 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
-        draggable={false}
-        loading="eager"
-        onError={() => setHasError(true)}
-      />
-    </div>
-  );
+  return { stars, loading };
 }
 
-function ProjectCard({ project, index, searchTerm }) {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+// ============================================================
+// IMAGE SLIDER - WITH DRAG
+// ============================================================
 
-  // Preload next image
-  useEffect(() => {
-    if (project.images.length > 1) {
-      const nextIndex = (currentImage + 1) % project.images.length;
-      const img = new Image();
-      img.src = project.images[nextIndex];
-    }
-  }, [currentImage, project.images]);
+function ImageSlider({ images, projectName }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  const nextImage = (e) => {
-    if (e) e.stopPropagation();
-    setCurrentImage((prev) => (prev + 1) % project.images.length);
+  const nextImage = () => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
-  const prevImage = (e) => {
-    if (e) e.stopPropagation();
-    setCurrentImage((prev) =>
-      prev === 0 ? project.images.length - 1 : prev - 1,
-    );
+  const prevImage = () => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   const handleDragEnd = (event, info) => {
-    setIsDragging(false);
     const threshold = 50;
     if (info.offset.x < -threshold) {
       nextImage();
@@ -1050,231 +733,198 @@ function ProjectCard({ project, index, searchTerm }) {
     }
   };
 
-  const handleDragStart = () => {
-    setIsDragging(true);
+  const variants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      x: direction < 0 ? 300 : -300,
+      opacity: 0,
+    }),
   };
 
-  if (
-    searchTerm &&
-    !project.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    !project.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    !project.category.toLowerCase().includes(searchTerm.toLowerCase())
-  ) {
-    return null;
-  }
+  return (
+    <div id="projects" className="relative w-full h-full overflow-hidden bg-[#0a0a0a]">
+      <motion.div
+        className="relative w-full h-full cursor-grab active:cursor-grabbing"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.3}
+        onDragEnd={handleDragEnd}
+      >
+        <AnimatePresence initial={false} custom={direction} mode="wait">
+          <motion.img
+            key={currentIndex}
+            src={images[currentIndex]}
+            alt={projectName || "Project image"}
+            className="w-full h-full object-cover"
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+            draggable={false}
+            onError={(e) => {
+              e.target.src =
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%231a1a1a'/%3E%3Ctext x='400' y='300' font-family='Arial' font-size='24' fill='%23444' text-anchor='middle'%3ENo Image%3C/text%3E%3C/svg%3E";
+            }}
+          />
+        </AnimatePresence>
+      </motion.div>
+
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10" />
+
+      {projectName && (
+        <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 bg-orange-400/20 text-orange-300 rounded-full text-xs font-bold border border-orange-400/30 backdrop-blur-sm">
+          <FaStar size={12} /> Featured
+        </div>
+      )}
+
+      {images.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > currentIndex ? 1 : -1);
+                setCurrentIndex(i);
+              }}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === currentIndex
+                  ? "w-6 bg-orange-400 shadow-lg shadow-orange-400/50"
+                  : "w-1.5 bg-white/30 hover:bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================
+// PROJECT CARD
+// ============================================================
+
+function ProjectCard({ project, isFavorite, onToggleFavorite, cardRef }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const { stars, loading } = useGitHubStars(project.github);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      ref={cardRef}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.02 }}
+      transition={{ duration: 0.4 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group h-full flex"
+      className="w-full mb-8 last:mb-0"
     >
-      {/* ===== NEW CARD DESIGN ===== */}
       <div
-        className={`relative flex flex-col justify-between w-full bg-[#0d0d0d] rounded-2xl border border-white/5 overflow-hidden transition-all duration-500 ${
+        className={`relative bg-[#0d0d0d] rounded-3xl overflow-hidden border transition-all duration-500 ${
           isHovered
-            ? "border-white/20 shadow-2xl shadow-white/5 -translate-y-1"
-            : "shadow-none"
+            ? "border-orange-400/30 shadow-2xl shadow-orange-400/5"
+            : "border-white/5"
         }`}
       >
-        {/* Soft Hover Glow */}
-        {isHovered && (
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/5 via-transparent to-transparent" />
-        )}
-
-        {/* Featured Badge - Black & White */}
-        {project.featured && (
-          <div className="absolute top-3 right-3 z-20 flex items-center gap-1 px-2 py-1 bg-white text-black rounded-full text-[10px] font-semibold">
-            <FaStar size={8} />
-            Featured
+        <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0">
+          <div className="relative aspect-[16/9] lg:aspect-[16/10] overflow-hidden">
+            <ImageSlider
+              images={project.images}
+              projectName={project.featured ? project.name : null}
+            />
           </div>
-        )}
 
-        {/* Category Badge - Gray */}
-        <div className="absolute top-3 left-3 z-20 px-2 py-1 bg-black/80 backdrop-blur-sm rounded-full text-[10px] text-gray-400 border border-white/5">
-          {project.category}
-        </div>
+          <div className="p-6 lg:p-10 flex flex-col justify-between">
+            <div>
+              <div className="inline-block px-3 py-1 bg-white/5 rounded-full text-[10px] text-gray-400 border border-white/5 mb-4">
+                {project.category}
+              </div>
 
-        {/* Image */}
-        <div className="relative aspect-video bg-black/50 overflow-hidden cursor-grab active:cursor-grabbing">
-          <motion.div
-            className="w-full h-full"
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.5}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            whileTap={{ cursor: "grabbing" }}
-          >
-            <AnimatePresence mode="wait">
-              <FastImage
-                key={currentImage}
-                src={project.images[currentImage]}
-                alt={project.name}
-                className="w-full h-full object-cover"
-              />
-            </AnimatePresence>
-          </motion.div>
+              <h3 className="text-2xl lg:text-4xl font-bold text-white mb-3">
+                {project.name}
+              </h3>
 
-          {/* Drag Indicator */}
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isDragging ? 1 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="flex items-center gap-3 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full text-[10px] text-white/70">
-              <FaArrowLeft size={12} />
-              Drag
-              <FaArrowRight size={12} />
-            </div>
-          </motion.div>
+              <p className="text-sm lg:text-base text-gray-400 leading-relaxed max-w-xl">
+                {project.description}
+              </p>
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-          {/* Navigation Buttons */}
-          {project.images.length > 1 && (
-            <>
-              <button
-                onClick={prevImage}
-                className={`absolute left-2 top-1/2 -translate-y-1/2 p-1.5 bg-black/70 hover:bg-black/90 rounded-full text-white transition-all backdrop-blur-sm z-20 ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <FaArrowLeft size={12} />
-              </button>
-              <button
-                onClick={nextImage}
-                className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-black/70 hover:bg-black/90 rounded-full text-white transition-all backdrop-blur-sm z-20 ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <FaArrowRight size={12} />
-              </button>
-
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-20">
-                {project.images.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentImage(i);
-                    }}
-                    className={`h-1 rounded-full transition-all duration-300 ${
-                      i === currentImage
-                        ? "w-4 bg-white shadow-lg"
-                        : "w-1.5 bg-white/30 hover:bg-white/50"
-                    }`}
-                  />
+              <div className="flex flex-wrap gap-2 mt-4">
+                {project.tech.map((techName) => (
+                  <span
+                    key={techName}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs bg-white/5 text-gray-300 rounded-full border border-white/5"
+                  >
+                    {techIcons[techName] || (
+                      <FaCircle className="text-gray-500 text-[8px]" />
+                    )}
+                    {techName}
+                  </span>
                 ))}
               </div>
-            </>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="p-5 space-y-2.5">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="text-sm font-bold text-white group-hover:text-gray-300 transition-colors">
-              {project.name}
-            </h3>
-            <span className="text-[10px] text-gray-600 font-mono">
-              #{String(project.id).padStart(2, "0")}
-            </span>
-          </div>
-
-          <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 min-h-[2rem]">
-            {project.description}
-          </p>
-
-          <div className="flex flex-wrap gap-1">
-            {project.tech.slice(0, 4).map((tech) => (
-              <span
-                key={tech.name}
-                className="flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium bg-white/5 text-gray-400 rounded-full border border-white/5"
-              >
-                <span className="text-[10px]">{tech.icon}</span>
-                {tech.name}
-              </span>
-            ))}
-            {project.tech.length > 4 && (
-              <span className="px-1.5 py-0.5 text-[10px] text-gray-600">
-                +{project.tech.length - 4}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Bottom stats and action buttons container */}
-        <div className="p-5 pt-0 space-y-2.5">
-          {/* Stats */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/5">
-            <div className="flex items-center gap-3 text-[10px] text-gray-500">
-              <span
-                className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsLiked(!isLiked);
-                }}
-              >
-                <FaHeart
-                  className={`${isLiked ? "text-white fill-white" : ""} transition-colors`}
-                  size={10}
-                />
-                {project.likes + (isLiked ? 1 : 0)}
-              </span>
-              <span className="flex items-center gap-1">
-                <FaEye size={10} />
-                {project.views}
-              </span>
             </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsBookmarked(!isBookmarked);
-              }}
-              className="p-1 hover:bg-white/5 rounded transition-colors"
-            >
-              <FaBookmark
-                className={`${isBookmarked ? "text-white" : "text-gray-600"} transition-colors`}
-                size={11}
-              />
-            </button>
-          </div>
 
-          {/* Buttons */}
-          <div className="flex gap-1.5 pt-1">
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 text-[10px] font-medium rounded-lg transition-all duration-300 ${
-                isHovered
-                  ? "bg-white text-black scale-105 shadow-lg shadow-white/20"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10"
-              }`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaGlobe size={10} />
-              Live Demo
-            </a>
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`px-2.5 py-1.5 text-[10px] rounded-lg transition-all duration-300 flex items-center justify-center ${
-                isHovered
-                  ? "text-black bg-white border border-white/10 scale-105"
-                  : "text-gray-500 bg-white/5 hover:bg-white/10 hover:text-white"
-              }`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaGithub size={13} />
-            </a>
+            <div className="mt-6 pt-6 border-t border-white/5">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-6 text-sm">
+                  <button
+                    onClick={() => onToggleFavorite(project.id)}
+                    className={`flex items-center gap-1.5 transition-all ${
+                      isFavorite
+                        ? "text-orange-400"
+                        : "text-gray-500 hover:text-white"
+                    }`}
+                  >
+                    <FaHeart
+                      className={isFavorite ? "fill-orange-400" : ""}
+                      size={16}
+                    />
+                    {isFavorite ? "Liked" : "Like"}
+                  </button>
+                  <span className="flex items-center gap-1.5 text-orange-400">
+                    <FaStar size={16} />
+                    {loading ? (
+                      <span className="animate-pulse">...</span>
+                    ) : (
+                      stars
+                    )}
+                  </span>
+                </div>
+
+                <div className="flex gap-3">
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all ${
+                      isHovered
+                        ? "bg-orange-400/20 text-orange-300 border border-orange-400/30 shadow-lg shadow-orange-400/10"
+                        : "bg-white/10 text-white hover:bg-white/20"
+                    }`}
+                  >
+                    <FaGlobe size={14} /> Live Demo
+                  </a>
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white text-sm font-bold rounded-xl transition-all"
+                  >
+                    <FaGithub size={18} />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1282,163 +932,264 @@ function ProjectCard({ project, index, searchTerm }) {
   );
 }
 
-export default function ProjectsShowcase() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+// ============================================================
+// MAIN
+// ============================================================
 
-  const filteredProjects = useMemo(() => {
-    if (!searchTerm) return projectsData;
-    return projectsData.filter(
-      (p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchTerm.toLowerCase()),
+export default function ProjectsShowcase() {
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [favorites, setFavorites] = useState([]);
+  const projectsRef = useRef(null);
+  const firstNewProjectRef = useRef(null);
+  const prevVisibleCountRef = useRef(3);
+
+  const toggleFavorite = (id) => {
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id],
     );
-  }, [searchTerm]);
+  };
+
+  const getFilteredProjects = () => {
+    let base = allProjects;
+
+    if (activeTab === "favorites") {
+      base = base.filter((p) => favorites.includes(p.id));
+    }
+
+    if (searchTerm) {
+      base = base.filter(
+        (p) =>
+          p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          p.category.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+    }
+
+    return base;
+  };
+
+  const filtered = getFilteredProjects();
+  const visibleProjects = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  const loadMore = () => {
+    prevVisibleCountRef.current = visibleCount;
+    setVisibleCount((prev) => prev + 3);
+
+    setTimeout(() => {
+      if (firstNewProjectRef.current) {
+        const element = firstNewProjectRef.current;
+        const offset = 80;
+        const elementPosition =
+          element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - offset;
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+      }
+    }, 300);
+  };
+
+  useEffect(() => {
+    setVisibleCount(3);
+    prevVisibleCountRef.current = 3;
+  }, [searchTerm, activeTab]);
+
+  const favoritesCount = favorites.length;
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-screen bg-[#0a0a0a]">
-      {/* ====== SIMPLE BLACK & GRAY ====== */}
+    <section className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[#0a0a0a]">
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-1/4 w-[600px] h-[600px] bg-orange-400/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-1/4 w-[500px] h-[500px] bg-orange-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl" />
+      </div>
 
-      {/* Grid - Soft Gray */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: `
-          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
-        `,
-          backgroundSize: "50px 50px",
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
         }}
       />
 
-      {/* Center Lines - Soft */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/10" />
-        <div className="absolute top-0 left-1/2 w-[1px] h-full bg-white/10" />
+        <div className="absolute top-8 left-8 w-16 h-16 border-t-2 border-l-2 border-orange-400/20" />
+        <div className="absolute top-8 right-8 w-16 h-16 border-t-2 border-r-2 border-orange-400/20" />
+        <div className="absolute bottom-8 left-8 w-16 h-16 border-b-2 border-l-2 border-orange-400/20" />
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-b-2 border-r-2 border-orange-400/20" />
       </div>
 
-      {/* Corner Accents */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-white/15" />
-        <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-white/15" />
-        <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-white/15" />
-        <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-white/15" />
-      </div>
-
-      {/* Soft Glow */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-500/10 rounded-full border border-indigo-500/20 mb-3">
-            <FaRocket className="text-indigo-400 text-xs" />
-            <span className="text-[10px] font-medium text-indigo-400">
+      <div className="max-w-5xl mx-auto relative z-10">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-400/10 rounded-full border border-orange-400/20 mb-4">
+            <FaRocket className="w-4 h-4 text-orange-300" />
+            <span className="text-xs font-medium text-orange-300 tracking-wider uppercase">
               Portfolio
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-1">
-            Projects
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-              .
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-3">
+            My{" "}
+            <span className="bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent">
+              Projects
             </span>
           </h2>
 
-          <p className="text-xs text-gray-400">
-            <span className="text-white font-semibold">
-              {filteredProjects.length}
-            </span>{" "}
-            projects built with modern tech
+          <p className="text-gray-400 max-w-lg mx-auto mb-6">
+            {filtered.length} projects built with modern technologies
           </p>
 
-          {/* Search */}
-          <div className="max-w-sm mx-auto mt-4">
-            <div
-              className={`relative transition-all duration-300 ${isSearchFocused ? "scale-105" : ""}`}
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <button
+              onClick={() => setActiveTab("all")}
+              className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                activeTab === "all"
+                  ? "bg-orange-400/20 text-orange-300 border border-orange-400/30"
+                  : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10"
+              }`}
             >
-              <div className="relative flex items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden transition-all duration-300 hover:border-indigo-500/50 focus-within:border-indigo-500/50 focus-within:shadow-lg focus-within:shadow-indigo-500/10">
-                <FaSearch className="absolute left-3 text-gray-500 text-xs" />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTitleOrDescription(e.target.value)}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() => setIsSearchFocused(false)}
-                  className="w-full pl-8 pr-10 py-2.5 bg-transparent text-white placeholder-gray-500 focus:outline-none text-sm"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="absolute right-3 text-gray-500 hover:text-white transition-colors text-xs"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
+              All Projects
+            </button>
+            <button
+              onClick={() => setActiveTab("favorites")}
+              className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
+                activeTab === "favorites"
+                  ? "bg-orange-400/20 text-orange-300 border border-orange-400/30"
+                  : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <FaHeart
+                className={activeTab === "favorites" ? "fill-orange-300" : ""}
+                size={14}
+              />
+              Favorites
+              {favoritesCount > 0 && (
+                <span className="ml-1 px-2 py-0.5 bg-orange-400/20 text-orange-300 rounded-full text-[10px] font-bold">
+                  {favoritesCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            <div className="relative w-full">
+              <FaSearch
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+                size={14}
+              />
+              <input
+                type="text"
+                placeholder="Search projects..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-11 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-orange-400/50 transition-colors"
+              />
             </div>
           </div>
         </div>
 
-        {/* Projects Grid with items-stretch for uniform height while keeping compact design */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-          {filteredProjects.length > 0 ? (
-            filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                searchTerm={searchTerm}
-              />
-            ))
+        <div ref={projectsRef} className="space-y-8">
+          {visibleProjects.length > 0 ? (
+            visibleProjects.map((project, index) => {
+              const isFirstNew = index === prevVisibleCountRef.current;
+              return (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  isFavorite={favorites.includes(project.id)}
+                  onToggleFavorite={toggleFavorite}
+                  cardRef={isFirstNew ? firstNewProjectRef : null}
+                />
+              );
+            })
           ) : (
-            <div className="col-span-3 text-center py-12">
-              <div className="text-3xl mb-2">🔍</div>
-              <h3 className="text-lg font-bold text-white mb-1">
-                No projects found
+            <div
+              className="flex flex-col justify-center items-center text-center py-20 "
+            >
+              <div className="text-6xl mb-4">
+                {activeTab === "favorites" ? (
+                  <FaHeart className="text-red-400" size={40} />
+                ) : (
+                  <FaSearch className="text-gray-400" size={40} />
+                )}
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">
+                {activeTab === "favorites"
+                  ? "No favorites yet"
+                  : "No projects found"}
               </h3>
-              <p className="text-xs text-gray-400">Try adjusting your search</p>
+              <p className="text-gray-400">
+                {activeTab === "favorites"
+                  ? "Start liking projects to see them here"
+                  : "Try adjusting your search"}
+              </p>
             </div>
           )}
         </div>
 
-        {/* Stats */}
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-2 max-w-2xl mx-auto">
+        {hasMore && (
+          <div className="text-center mt-8">
+            <button
+              onClick={loadMore}
+              className="px-8 py-3 bg-orange-400/20 text-orange-300 border border-orange-400/30 font-bold rounded-xl hover:bg-orange-400/30 transition-all duration-300"
+            >
+              Load More ({filtered.length - visibleCount} remaining)
+            </button>
+          </div>
+        )}
+
+        {!hasMore && filtered.length > 3 && (
+          <div className="text-center mt-8 text-gray-500 text-sm">
+            <FaCheck className="inline mr-1 text-green-400" size={14} /> All{" "}
+            {filtered.length} projects loaded
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-16">
           {[
             {
-              label: "Projects",
-              value: projectsData.length,
-              icon: <FaCode className="text-indigo-400" />,
+              label: "Total Projects",
+              value: allProjects.length,
+              icon: <FaFolderOpen className="text-orange-300" size={18} />,
+              desc: "All projects",
+            },
+            {
+              label: "Featured",
+              value: allProjects.filter((p) => p.featured).length,
+              icon: <FaStar className="text-yellow-400" size={18} />,
+              desc: "Top projects",
             },
             {
               label: "Tech Stack",
               value: "10+",
-              icon: <FaReact className="text-cyan-400" />,
+              icon: <FaReact className="text-cyan-400" size={18} />,
+              desc: "Technologies",
             },
             {
-              label: "Featured",
-              value: projectsData.filter((p) => p.featured).length,
-              icon: <FaStar className="text-yellow-400" />,
-            },
-            {
-              label: "Likes",
-              value: projectsData.reduce((acc, p) => acc + p.likes, 0),
-              icon: <FaHeart className="text-red-400" />,
+              label: "Favorites",
+              value: favoritesCount,
+              icon: <FaHeart className="text-red-400" size={18} />,
+              desc: "Liked projects",
             },
           ].map((stat, i) => (
             <div
               key={i}
-              className="text-center p-2.5 bg-white/5 rounded-lg border border-white/5 hover:border-indigo-500/20 transition-all duration-300"
+              className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/5 hover:border-orange-400/20 transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="text-lg font-bold text-white">{stat.value}</div>
-              <div className="text-[10px] text-gray-500 flex items-center justify-center gap-1">
+              <div className="flex items-center justify-center gap-2 mb-1">
                 {stat.icon}
+                <span className="text-2xl font-bold text-white">
+                  {stat.value}
+                </span>
+              </div>
+              <div className="text-xs font-medium text-gray-400">
                 {stat.label}
               </div>
+              <div className="text-[10px] text-gray-600">{stat.desc}</div>
             </div>
           ))}
         </div>
