@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import Loader from "@/components/Loader";
 
 // Google Fonts with proper fallback
 const bricolage = Bricolage_Grotesque({
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={bricolage.className}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Loader />
         <NavBar />
         {children}
         <Footer />
