@@ -88,50 +88,64 @@ export default function NavBar(): ReactNode {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          
-          {/* ==========================================================
-              BRAND 
-              ========================================================== */}
-
-          <Link 
-            href="/" 
-            className="flex items-center gap-3 group relative"
-          >
-            {/* Animated icon background */}
+          // ============================================================ //
+          BRAND // ============================================================
+          <Link href="/" className="flex items-center gap-3 group relative">
+            {/* Animated icon background with glow effect */}
             <div className="relative">
-              <div className="absolute inset-0  bg-white/5 rounded-xl blur-xl group-hover:bg-white/10 transition-all duration-500" />
-              <div className="relative p-2 rounded-full bg-white/5 border border-white/5 group-hover:border-white/10 transition-all duration-300 group-hover:scale-110">
-                <Image alt="logo" src='https://iili.io/Cgd06TG.png' width={50} height={50}></Image>
+              {/* Outer glow ring */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full opacity-0 group-hover:opacity-75 blur-xl transition-all duration-500 group-hover:scale-110" />
+
+              {/* Rotating border */}
+              <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="absolute inset-0 rounded-full bg-black/90" />
+              </div>
+
+              {/* Main icon container */}
+              <div className="relative p-1.5 rounded-full bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 backdrop-blur-sm border border-white/10 group-hover:border-white/20 transition-all duration-300 group-hover:scale-110">
+                <div className="relative rounded-full bg-black/90 p-1.5">
+                  <Image
+                    alt="logo"
+                    src="https://iili.io/Cgd06TG.png"
+                    width={45}
+                    height={45}
+                    className="rounded-full"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Text with dot animation */}
+            {/* Text with gradient and glow */}
             <div className="flex items-center">
-              <span className="text-lg font-bold text-white tracking-tight">
-                Hami
-                <span className="text-white/40">.</span>
-                <span className="text-white/80">Parsa</span>
+              <span className="text-xl font-bold tracking-tight">
+                <span className="text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 transition-all duration-500">
+                  Hami
+                </span>
+                <span className="text-white/30">.</span>
+                <span className="text-white/80 group-hover:text-white transition-colors duration-500">
+                  Parsa
+                </span>
               </span>
-              
-              {/* Status dot */}
+
+              {/* Status dot with pulse ring */}
               <span className="ml-3 relative">
-                <span className="absolute inset-0 w-2 h-2 bg-green-400 rounded-full animate-ping opacity-75" />
-                <span className="relative block w-2 h-2 bg-green-400 rounded-full" />
+                <span className="absolute inset-0 w-2.5 h-2.5 bg-green-400 rounded-full animate-ping opacity-75" />
+                <span className="absolute -inset-2 bg-green-400/20 rounded-full animate-pulse" />
+                <span className="relative block w-2.5 h-2.5 bg-green-400 rounded-full shadow-lg shadow-green-400/50" />
               </span>
             </div>
 
             {/* Hover glow */}
-            <span className="absolute -inset-4 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-white/0 via-white/5 to-white/0" />
+            <span className="absolute -inset-4 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-purple-500/0 via-white/5 to-blue-500/0" />
           </Link>
-
           {/* ==========================================================
               DESKTOP MENU 
               ========================================================== */}
-
           <div className="hidden md:flex items-center gap-1">
             {menuItems.map((item: MenuItem) => {
-              const isActive: boolean = activeSection === item.href.replace("#", "");
-              
+              const isActive: boolean =
+                activeSection === item.href.replace("#", "");
+
               return (
                 <Link
                   key={item.name}
@@ -143,14 +157,20 @@ export default function NavBar(): ReactNode {
                   }`}
                 >
                   {item.name}
-                  
+
                   {/* Active indicator */}
                   {isActive && (
                     <motion.span
                       layoutId="activeNav"
                       className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 rounded-full"
-                      style={{ background: "linear-gradient(to right, #fff, #fff/40)" }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      style={{
+                        background: "linear-gradient(to right, #fff, #fff/40)",
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                      }}
                     />
                   )}
                 </Link>
@@ -188,16 +208,16 @@ export default function NavBar(): ReactNode {
               </a>
             </div>
           </div>
-
           {/* ==========================================================
               MOBILE TOGGLE 
               ========================================================== */}
-
           <button
             className="md:hidden p-2.5 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
             onClick={toggleMenu}
             style={{
-              background: isOpen ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
+              background: isOpen
+                ? "rgba(255,255,255,0.08)"
+                : "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.06)",
             }}
             aria-label="Toggle menu"
