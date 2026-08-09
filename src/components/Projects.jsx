@@ -82,7 +82,6 @@ const allProjects = [
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic1.png",
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic2.png",
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic3.png",
-      "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic4.png",
     ],
     tech: ["React", "Next.js", "TypeScript", "Tailwind"],
     description:
