@@ -58,7 +58,7 @@ const allProjects = [
   {
     id: 2,
     name: "Movies",
-    url: "https://imaginative-granita-28d88b.netlify.app/",
+    url: "https://hamiparsa.github.io/Movie/",
     github: "https://github.com/HamiParsa/Movie",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Movie/main/pic1.png",
@@ -76,7 +76,7 @@ const allProjects = [
   {
     id: 3,
     name: "Game Zone",
-    url: "https://stellular-salamander-2f94ef.netlify.app/",
+    url: "https://hamiparsa.github.io/Game-Zone/",
     github: "https://github.com/HamiParsa/Game-Zone",
     images: [
       "https://raw.githubusercontent.com/HamiParsa/Game-Zone/main/pic1.png",
