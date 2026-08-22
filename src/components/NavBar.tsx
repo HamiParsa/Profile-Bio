@@ -11,7 +11,6 @@ import {
   X,
   Github,
   Linkedin,
-  Send,
   Code2,
   Sparkles,
   Zap,
@@ -598,11 +597,6 @@ export default function NavBar(): ReactNode {
                   href: "https://www.linkedin.com/in/HamiParsa",
                   label: "LinkedIn",
                 },
-                {
-                  icon: Send,
-                  href: "https://t.me/hamiparsa",
-                  label: "Telegram",
-                },
               ].map((social, index) => (
                 <motion.a
                   key={index}
@@ -708,7 +702,7 @@ export default function NavBar(): ReactNode {
                     icon: Linkedin,
                     href: "https://www.linkedin.com/in/HamiParsa",
                   },
-                  { icon: Send, href: "https://t.me/hamiparsa" },
+                  
                   {
                     icon: Code2,
                     href: "https://github.com/hamiparsa/Profile-Bio",

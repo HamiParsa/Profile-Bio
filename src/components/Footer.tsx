@@ -8,12 +8,10 @@ import { useState, useEffect, ReactNode } from "react";
 import { 
   FaGithub, 
   FaLinkedin, 
-  FaTelegramPlane, 
   FaHeart, 
   FaStar, 
   FaCodeBranch 
 } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Send, Mail } from "lucide-react";
 
@@ -83,19 +81,7 @@ const socialLinks: SocialLink[] = [
     link: "https://www.linkedin.com/in/HamiParsa", 
     label: "LinkedIn", 
     color: "hover:text-blue-400" 
-  },
-  { 
-    icon: <FaTelegramPlane size={20} />, 
-    link: "https://t.me/hamiparsa", 
-    label: "Telegram", 
-    color: "hover:text-blue-500" 
-  },
-  { 
-    icon: <FaInstagram size={20} />, 
-    link: "https://www.instagram.com/hamii.parsa", 
-    label: "Instagram", 
-    color: "hover:text-pink-500" 
-  },
+  }
 ];
 
 const quickLinks: QuickLink[] = [

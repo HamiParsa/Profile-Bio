@@ -32,7 +32,6 @@ import { MdEmail, MdLocationOn } from "react-icons/md";
 import { 
   Github, 
   Linkedin, 
-  Send, 
   Globe,
   LucideIcon,
 } from "lucide-react";
@@ -107,7 +106,6 @@ const CONFIG: Config = {
   social: [
     { icon: Github, href: "https://github.com/HamiParsa" },
     { icon: Linkedin, href: "https://linkedin.com/in/HamiParsa" },
-    { icon: Send, href: "https://t.me/HamiParsa" },
     { icon: Globe, href: "https://hamiparsa.github.io/Profile-Bio/" },
   ],
 };
