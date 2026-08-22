@@ -13,7 +13,7 @@ import {
   FaCodeBranch 
 } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Send, Mail } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 // ============================================================
 // TYPES
@@ -365,15 +365,6 @@ export default function Footer(): ReactNode {
                 style={{ background: c.bgCard }}
               >
                 <Linkedin className="w-3.5 h-3.5" style={{ color: c.textDim }} />
-              </a>
-              <a
-                href="https://t.me/hamiparsa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1.5 rounded-lg transition-all duration-300 hover:scale-110"
-                style={{ background: c.bgCard }}
-              >
-                <Send className="w-3.5 h-3.5" style={{ color: c.textDim }} />
               </a>
               <a
                 href="mailto:hamiparsa@gmail.com"
